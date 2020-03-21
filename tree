@@ -1,0 +1,180 @@
+#include <iostream>
+using namespace std;
+#include<queue>
+struct node
+{
+    int data;
+    struct node *left;
+    struct node *right;
+}*head;
+struct node * insert_node(struct node *h,int n)
+{
+  node *t;
+  t=new node;
+  t->data=n;
+  t->left=t->right=NULL;
+  if(h==NULL)
+  {
+      h=t;
+  }
+  else if(t->data<h->data)
+  {
+      h->left=insert_node(h->left,n);
+  }
+  else
+  {
+      h->right=insert_node(h->right,n);
+  }
+  return h;
+}
+void inorder(node *h)
+{
+    if(h==NULL)
+    {
+        return;
+    }
+    inorder(h->left);
+    cout<<h->data<<" ";
+    inorder(h->right);
+}
+void preorder(node *h)
+{
+    if(h==NULL)
+    {
+        return;
+    }
+    cout<<h->data<<" ";
+    preorder(h->left);
+    preorder(h->right);
+}
+void postorder(node *h)
+{
+    if(h==NULL)
+    {
+        return;
+    }
+    postorder(h->left);
+    postorder(h->right);
+    cout<<h->data<<" ";
+}
+void search(node *h,int n)
+{
+    if(h==NULL)
+    {
+        cout<<"Element is not found in the tree";
+    }
+    else if(h->data==n)
+    {
+        cout<<"Element is found in the tree";
+    }
+    else if(n<h->data)
+    {
+        search(h->left,n);
+    }
+    else
+    {
+        search(h->right,n);
+    }
+
+}
+void max(node *h)
+{
+    if(h->right==NULL)
+    {
+        cout<<h->data<<"\n";
+    }
+    else
+    {
+     max(h->right);
+    }
+}
+void min(node *h)
+{
+    if(h->left==NULL)
+    {
+        cout<<h->data<<"\n";
+    }
+    else
+    {
+        min(h->left);
+    }
+}
+void level(node *h)
+{
+    queue<node *> a;
+    a.push(h);
+    if(a.front()==NULL)
+    {
+     cout<<"TREE IS NOT GROWN";
+    }
+    while(!a.empty())
+    {
+        if(a.front()->left!=NULL)
+        a.push(a.front()->left);
+        if(a.front()->right!=NULL)
+        a.push(a.front()->right);
+        cout<<a.front()->data<<"\n";
+        a.pop();
+   }
+}
+void inorder_successor(node *t,int n)
+{
+node *h=t;
+while(h->data!=n)
+{
+    if(n<h->data)
+    {
+    h=h->left;
+    }
+    else
+        h=h->right;
+}
+if(h->right!=NULL)
+{
+while(h->left!=NULL)
+{
+    h=h->left;
+}
+cout<<h->data;
+return;
+}
+else
+{
+    node *a=t,*s;
+    while(a!=h)
+    {
+        if(n<a->data)
+        {
+            s=a;
+            a=a->left;
+        }
+        else
+            a=a->right;
+    }
+    cout<<s->data;
+    return;
+}
+}
+int main() {
+
+	head=insert_node(head,34);
+	head=insert_node(head,5);
+	head=insert_node(head,17);
+	head=insert_node(head,3);
+	head=insert_node(head,7);
+	head=insert_node(head,68);
+	head=insert_node(head,67);
+/*	inorder(head);
+	cout<<"\n";
+	preorder(head);
+	cout<<"\n";
+	postorder(head);*/
+//	search(head,7);
+   // min(head);
+   // max(head);
+    //level(head);
+    int x;
+    cin>>x;
+    inorder_successor(head,x);
+	return 0;
+}
